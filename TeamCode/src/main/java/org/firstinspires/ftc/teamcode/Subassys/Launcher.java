@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 //import com.bylazar.
 
 public class Launcher {
@@ -12,6 +13,8 @@ public class Launcher {
     private DcMotorEx LLM;
     private DcMotorEx RLM;
     private LinearOpMode opmode = null;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     public Launcher() {
     }
@@ -51,11 +54,13 @@ public class Launcher {
 //        Intake.Launch(1,1);
     }
 
-    public void manualLauncher() {
+    public void manualLauncher(double velocity) {
+//        RLM.setPower(.67);
+//        LLM.setPower(.67);
         RLM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         LLM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        RLM.setVelocity(1050);
-        LLM.setVelocity(1050);
+        RLM.setVelocity(velocity);
+        LLM.setVelocity(velocity);
         // maybe 1050?
         // it is 1050 lol
     }
@@ -87,109 +92,145 @@ public class Launcher {
     }
 
     public void autoLaunchFar() {
-        Intake.FeedR();
+//        Intake.FeedR();
         launch(1050);
         opmode.sleep(100);
         launch(1050);
         opmode.sleep(100);
         launch(1050);
-    }
-    public void autoLaunchClose() {
-        Intake.FeedR();
-        launch(950);
-        opmode.sleep(100);
-        launch(950);
-        opmode.sleep(100);
-        launch(950);
+        opmode.sleep(250);
+        stop();
     }
 
-    private void launch(double velocity)
-    {
-        manualLauncher();
-        Intake.intake(0.85);
-        opmode.sleep(450);
-        while (opmode.opModeIsActive() && !isAtVelocity(velocity)){
+    public void autoLaunchClose() {
+//        Intake.FeedR();
+        launch(950);
+        opmode.sleep(100);
+        launch(950);
+        opmode.sleep(100);
+        launch(950);
+        opmode.sleep(250);
+        stop();
+    }
+
+    public void farLaunch(double speed) {
+
+        // run feeder backwards
+        Intake.FeedR();
+        opmode.sleep(250);
+
+        //set motor speed
+        RLM.setPower(speed);
+        LLM.setPower(speed);
+
+        //wait for spinup
+        opmode.sleep(600);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(225);
+        Intake.FeedStop();
+
+        //wait for spinup
+        opmode.sleep(475);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(300);
+        Intake.FeedStop();
+
+        //wait for spinup
+        opmode.sleep(475);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(300);
+        Intake.FeedStop();
+        Intake.stop();
+
+        opmode.sleep(100);
+        RLM.setPower(0);
+        LLM.setPower(0);
+    }
+
+    public void closeLaunch(double speed) {
+
+        // run feeder backwards
+        Intake.FeedR();
+        opmode.sleep(350);
+
+        //set motor speed
+        RLM.setPower(speed);
+        LLM.setPower(speed);
+
+        //wait for spinup
+        opmode.sleep(600);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(200);
+        Intake.FeedStop();
+
+        //wait for spinup
+        opmode.sleep(500);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(300);
+        Intake.FeedStop();
+
+        //wait for spinup
+        opmode.sleep(500);
+
+        //launch an artifact
+        Intake.Launch(0.4, 0.8);
+        opmode.sleep(300);
+        Intake.FeedStop();
+        Intake.stop();
+
+        opmode.sleep(250);
+        RLM.setPower(0);
+        LLM.setPower(0);
+    }
+
+    private void launch(double velocity) {
+        manualLauncher(velocity);
+        opmode.sleep(750);
+        while (opmode.opModeIsActive() && !isAtVelocity(velocity)) {
             opmode.telemetry.addData("SpinUp isAtVelocity is", isAtVelocity(velocity));
             opmode.telemetry.addLine("RLM Velocity: " + RLM.getVelocity());
             opmode.telemetry.addLine("LLM Velocity: " + LLM.getVelocity());
             opmode.telemetry.update();
         }
-        Intake.Bunch(0,.4);
-        while(opmode.opModeIsActive() && RLM.getVelocity() > (velocity - 30) && LLM.getVelocity() > (velocity - 30))
-        {
+        runtime.reset();
+        while (opmode.opModeIsActive() && RLM.getVelocity() > (velocity - 50) && LLM.getVelocity() > (velocity - 50)
+        && runtime.milliseconds() < 2500) {
+            Intake.intake(.9);
             Intake.Feed();
         }
+        Intake.stop();
         Intake.FeedStop();
     }
-//    public void autoLaunchFar() {
-//        manualLauncher();
-//        opmode.telemetry.addLine("manualLaunch");
-//        Intake.FeedR();
-//        Intake.intake(0.2);
-//        while (opmode.opModeIsActive() && !isAtVelocity(1050)){
-//            opmode.telemetry.addData("SpinUp isAtVelocity is", isAtVelocity(1050));
-//            opmode.telemetry.addLine("RLM Velocity: " + RLM.getVelocity());
-//            opmode.telemetry.addLine("LLM Velocity: " + LLM.getVelocity());
-//            opmode.telemetry.update();
-//        }
-//        opmode.telemetry.addData("first while done", "102");
+
+
+//    public void publicExecution(double speed){
+//        Intake.intake(1);
 //        Intake.Feed();
-//        Intake.intake(.5);
-//        opmode.sleep(1000);
-//        Intake.stop();
-//        opmode.telemetry.addLine("After 1st launch");
-//        opmode.telemetry.update();
-//        while (!isAtVelocity(1050)){
-//            opmode.telemetry.addData("107 isAtVelocity is", isAtVelocity(1050));
-//            opmode.telemetry.addLine("RLM Velocity: " + RLM.getVelocity());
-//            opmode.telemetry.addLine("LLM Velocity: " + LLM.getVelocity());
-//            opmode.telemetry.update();
-//        }
-//        opmode.telemetry.addData("2nd while done", "114");
-//        Intake.intake(.5);
-//        opmode.sleep(1000);
-//        Intake.stop();
-//        opmode.telemetry.addLine("After 2nd launch");
-//        opmode.telemetry.update();
-//        while (!isAtVelocity(1050)){
-//            opmode.telemetry.addData("115 isAtVelocity is", isAtVelocity(1050));
-//            opmode.telemetry.addLine("RLM Velocity: " + RLM.getVelocity());
-//            opmode.telemetry.addLine("LLM Velocity: " + LLM.getVelocity());
-//            opmode.telemetry.update();
-//        };
-//        Intake.intake(.5);
-//        opmode.sleep(1000);
-//        Intake.stop();
-//        Intake.FeedStop();
-//        opmode.telemetry.addLine("After 3rd launch");
-//        opmode.telemetry.update();
+//        RLM.setPower(1);
+//        LLM.setPower(1);
 //    }
 
-//    public void autoLaunchClose() {
-//        autoLaunch();
-//        while (!isAtVelocity(950)){}
-//        Intake.FeedR();
-//        Intake.intake(0.2);
-//        while (!isAtVelocity(950)){}
-//        Intake.Feed();
-//        Intake.intake(.5);
-//        Intake.stop();
-//        while (!isAtVelocity(950)){}
-//        Intake.intake(.5);
-//        Intake.stop();
-//        while (!isAtVelocity(950)){}
-//        Intake.stop();
-//        Intake.FeedStop();
-//    }
-    public boolean isAtVelocity(double targetVelocity){
-        double tolerence = 10.0;
+
+
+    public boolean isAtVelocity(double targetVelocity) {
+        double tolerence = 12.0;
         boolean rightRdy = false;
         boolean leftRdy = false;
-        leftRdy = Math.abs(LLM.getVelocity()-targetVelocity) <= tolerence;
-        rightRdy = Math.abs(RLM.getVelocity()-targetVelocity) <= tolerence;
-        if (rightRdy == true&&leftRdy==true){
+        leftRdy = Math.abs(LLM.getVelocity() - targetVelocity) <= tolerence;
+        rightRdy = Math.abs(RLM.getVelocity() - targetVelocity) <= tolerence;
+        if (rightRdy == true && leftRdy == true) {
             return true;
-        }else {
+        } else {
             return false;
         }
 

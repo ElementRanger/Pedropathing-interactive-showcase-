@@ -14,12 +14,17 @@ public class Intake {
     public Intake() {
     }
 
+    org.firstinspires.ftc.teamcode.Subassys.Launcher Launcher = new Launcher();
+
     public void init(LinearOpMode opMode) {
 
         HardwareMap hwMap;
 
         opmode = opMode;
         hwMap = opMode.hardwareMap;
+
+
+        Launcher.init(opmode);
 
         //names the motor
         IntakeM = hwMap.dcMotor.get("IntakeM");
@@ -52,7 +57,12 @@ public class Intake {
         IntakeM.setPower(0);
     }
     public void Feed(){
-        FeederM.setPower(0.5);
+        FeederM.setPower(0.4);
+        // no witnesses
+    }
+
+    public void feedSlow() {
+        FeederM.setPower(0.25);
     }
 
     public void FeedR() {
@@ -60,8 +70,12 @@ public class Intake {
     }
     public void Sort(){
         FeederM.setPower(.5);
+        IntakeM.setPower(.5);
+        Launcher.
         opmode.sleep(200);
         FeederM.setPower(0);
+        opmode.sleep(200);
+        IntakeM.setPower(0);
     }
     public void FeedStop(){
         FeederM.setPower(0);
