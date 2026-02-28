@@ -71,9 +71,10 @@ public class Intake {
     public void Sort(){
         FeederM.setPower(.5);
         IntakeM.setPower(.5);
-        Launcher.
+        Launcher.sort();
         opmode.sleep(200);
         FeederM.setPower(0);
+        Launcher.stop();
         opmode.sleep(200);
         IntakeM.setPower(0);
     }

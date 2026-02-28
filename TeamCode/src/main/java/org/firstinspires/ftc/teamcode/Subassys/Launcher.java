@@ -90,6 +90,10 @@ public class Launcher {
         RLM.setPower(0);
         LLM.setPower(0);
     }
+    public void sort(){
+        RLM.setPower(0.1);
+        LLM.setPower(0.1);
+    }
 
     public void autoLaunchFar() {
 //        Intake.FeedR();

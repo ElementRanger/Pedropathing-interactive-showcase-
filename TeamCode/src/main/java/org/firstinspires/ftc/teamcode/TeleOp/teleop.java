@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.Subassys.Launcher;
 //import com.bylazar.
 
 
+ // this is the thing that we run
 @TeleOp(name = "Teleop", group = "Teleop")
-// this is the thing that we run
 public class teleop extends LinearOpMode {
 
     View relativeLayout;
@@ -24,7 +24,8 @@ public class teleop extends LinearOpMode {
     private Limelight3A limelight;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() throws InterruptedException
+    {
 
         int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
@@ -123,7 +124,7 @@ public class teleop extends LinearOpMode {
             if (gamepad2.left_stick_y > .4 || newGamePad2.left_trigger.state) {
                 // grab ball
                 Intake.intake(.8);
-                Intake.feedSlow();
+//                Intake.feedSlow();
                 Launcher.stop();
             } else if ((gamepad2.left_stick_y < -.4) && gamepad2.dpad_down) {
                 // expel ball
