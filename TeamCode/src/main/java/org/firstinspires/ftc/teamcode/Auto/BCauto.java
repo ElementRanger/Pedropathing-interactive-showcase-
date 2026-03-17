@@ -132,6 +132,7 @@ public class BCauto extends LinearOpMode {
                 break;
             case 2:
                 if (!follower.isBusy()) {
+                    Launch.stop();
                     follower.followPath(Balign3, true);
                     setPathState(3);
                 }
@@ -168,6 +169,7 @@ public class BCauto extends LinearOpMode {
                 break;
             case 8:
                 if (!follower.isBusy()) {
+                    Launch.stop();
                     follower.followPath(Balign3, true);
                     setPathState(-1);
                 }
