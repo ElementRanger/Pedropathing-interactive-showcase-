@@ -10,7 +10,6 @@ import com.pedropathing.paths.*;
 import com.pedropathing.util.*;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.Functions;
 import org.firstinspires.ftc.teamcode.GamepadStates;
 import org.firstinspires.ftc.teamcode.Subassys.Intake;
 import org.firstinspires.ftc.teamcode.Subassys.Launcher;
@@ -115,7 +114,6 @@ public class BFauto extends LinearOpMode {
 //        SensorTraining Sensor = new SensorTraining();
 //        ServoTraining Servo = new ServoTraining();
 //        Limelight Limelight = new Limelight();
-        Functions Fun = new Functions();
 
         // names subassembly classes
         Drive.init(this);
@@ -124,7 +122,6 @@ public class BFauto extends LinearOpMode {
 //        Servo.init(this);
 //        Limelight.init(this);
         Launch.init(this);
-        Fun.init(this);
 
         follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(BFStart);

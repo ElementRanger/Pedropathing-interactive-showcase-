@@ -7,7 +7,6 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Functions;
 import org.firstinspires.ftc.teamcode.GamepadStates;
 import org.firstinspires.ftc.teamcode.Subassys.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subassys.Intake;
@@ -34,7 +33,6 @@ public class teleop extends LinearOpMode {
         Drivetrain Train = new Drivetrain();
         Launcher Launcher = new Launcher();
         Intake Intake = new Intake();
-        Functions Fun = new Functions();
 
         // Is this still/will be needed?
 //        ServoTraining Servo = new ServoTraining();
@@ -46,7 +44,6 @@ public class teleop extends LinearOpMode {
         Train.init(this);
         Intake.init(this);
         Launcher.init(this);
-        Fun.init(this);
 //        Servo.init(this);
 //        LL.init(this);
 //        Color.init(this);

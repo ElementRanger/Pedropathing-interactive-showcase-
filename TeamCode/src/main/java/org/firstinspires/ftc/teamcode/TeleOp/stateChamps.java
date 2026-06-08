@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Functions;
 import org.firstinspires.ftc.teamcode.GamepadStates;
 import org.firstinspires.ftc.teamcode.Subassys.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subassys.Intake;
@@ -18,12 +17,9 @@ public class stateChamps extends LinearOpMode {
         Drivetrain Train = new Drivetrain();
         Launcher Launcher = new Launcher();
         Intake Intake = new Intake();
-        Functions Fun = new Functions();
-
         Train.init(this);
         Intake.init(this);
         Launcher.init(this);
-        Fun.init(this);
 
         GamepadStates newGamePad1 = new GamepadStates(gamepad1);
         GamepadStates newGamePad2 = new GamepadStates(gamepad2);
